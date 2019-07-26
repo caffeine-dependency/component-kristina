@@ -121,7 +121,7 @@ const seedDataGenerator = (i) => {
   }
 }
 
-async function writeToFile() {
+const writeToFile = () => {
   var filepath = path.join(__dirname, '/data.json');
   var data = '';
   var count = 0;
@@ -132,10 +132,9 @@ async function writeToFile() {
       count++;
       data += JSON.stringify(seedDataGenerator(count));
     }
-    await fs.appendFileSync(filepath, data);
+   fs.appendFileSync(filepath, data);
     console.log(`round ${i}: ${count} items have been written to file`)
   }
-
 }
 
 writeToFile();
