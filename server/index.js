@@ -29,6 +29,7 @@ app.get('/api/viewer/products', (req, res) => {
 // For backend testing purposes
 app.get('/api/all', (req, res) => {
   db.find({})
+    .limit(3)
     .then((data) => {
       res.status(200).send(data);
     })
@@ -38,8 +39,8 @@ app.get('/api/all', (req, res) => {
 })
 
 app.get('/api/:id', (req, res) => {
-  var { id } = req.params
-  db.findOne({index:id})
+  var { id } = req.params;
+  db.findOne({ index: id })
     .then((data) => {
       res.status(200).send(data);
     })
