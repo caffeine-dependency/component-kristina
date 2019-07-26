@@ -1,5 +1,6 @@
 const imageData = require('./imageData.js');
 const fs = require('fs');
+const path = require('path');
 
 // Returns either a) the value for a random index in an array, or
 // b) a random integer only (by passing in a falsy value for first argument)
@@ -107,34 +108,83 @@ const imagesGenerator = () => {
 };
 
 // Returns an array of 100 randomly  generated product objects formatted to be stored in Mongo database.
-const seedDataGenerator = (start, end) => {
-  let arr = [];
-  for (let i = start; i <= end; i++) {
-    arr.push({
-      index: i,
-      name: nameGenerator(),
-      description: descriptionGenerator(),
-      rating: ratingGenerator(),
-      reviews: reviewsGenerator(),
-      price: priceGenerator(),
-      sizes: sizesGenerator(),
-      images: imagesGenerator()
-    })
+const seedDataGenerator = (i) => {
+  return {
+    index: i,
+    name: nameGenerator(),
+    description: descriptionGenerator(),
+    rating: ratingGenerator(),
+    reviews: reviewsGenerator(),
+    price: priceGenerator(),
+    sizes: sizesGenerator(),
+    images: imagesGenerator()
   }
-  return arr;
+}
+// const seedDataGenerator = (start, end) => {
+//   let arr = [];
+//   for (let i = start; i <= end; i++) {
+//     arr.push({
+//       index: i,
+//       name: nameGenerator(),
+//       description: descriptionGenerator(),
+//       rating: ratingGenerator(),
+//       reviews: reviewsGenerator(),
+//       price: priceGenerator(),
+//       sizes: sizesGenerator(),
+//       images: imagesGenerator()
+//     })
+//   }
+//   return arr;
+// }
+
+// WRITE TO JSON FILE
+// function writeToFile () {
+//   var start = 1;
+//   var end = 0;
+//   var stream = fs.createWriteStream('hello.json', { encoding: 'utf8' });
+//     // for (var i = 1; i <= 400; i++) {
+//       end += 25000;
+//       var data = JSON.stringify(seedDataGenerator(1, 1));
+//       // stream.write('hello.json', data.slice(1, data.length - 1));
+//       console.log(`round ${1}: items ${start} to ${end} have been written to file`)
+//       start = end + 1;
+//     // }
+//   stream.end();
+
+// }
+// writeToFile();
+
+async function writeToFile() {
+  var filepath = path.join(__dirname, '/data.json');
+  var data = '';
+  var count = 0;
+  fs.writeFileSync(filepath, '');
+  for (var i = 1; i <= 400; i++) {
+    data = '';
+    for (var j = 1; j <= 25000; j++) {
+      count++;
+      data += JSON.stringify(seedDataGenerator(count));
+    }
+    await fs.appendFileSync(filepath, data);
+    console.log(`round ${i}: ${count} items have been written to file`)
+  }
+
 }
 
-async function writeToFile () {
-  var start = 1;
-  var end = 0;
-  fs.writeFileSync('data.json', '[');
-    for (var i = 1; i <= 400; i++) {
-      end += 25000;
-      var data = JSON.stringify(seedDataGenerator(start, end));
-      fs.appendFileSync('data.json', data.slice(1, data.length - 1));
-      console.log(`round ${i}: items ${start} to ${end} have been written to file`)
-      start = end + 1;
-    }
-  fs.appendFileSync('data.json', ']');
-}
+
+// async function writeToFile () {
+//   var start = 1;
+//   var end = 0;
+//   fs.writeFileSync('data.json', '[');
+//     for (var i = 1; i <= 400; i++) {
+//       end += 25000;
+//       var data = JSON.stringify(seedDataGenerator(start, end));
+//       fs.appendFileSync('data.json', data.slice(1, data.length - 1));
+//       console.log(`round ${i}: items ${start} to ${end} have been written to file`)
+//       start = end + 1;
+//     }
+//   fs.appendFileSync('data.json', ']');
+// }
+
+// }
 writeToFile();
