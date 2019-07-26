@@ -29,7 +29,6 @@ app.get('/api/viewer/products', (req, res) => {
 // For backend testing purposes
 app.get('/api/all', (req, res) => {
   db.find({})
-    .limit(3)
     .then((data) => {
       res.status(200).send(data);
     })
