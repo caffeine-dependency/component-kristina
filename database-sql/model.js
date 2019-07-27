@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('./index.js');
 
-const products = db.define('products', {
+const Product = db.define('product', {
   index: Sequelize.INTEGER,
   name: Sequelize.STRING,
   description: Sequelize.STRING,
@@ -13,9 +13,9 @@ const products = db.define('products', {
   timestamps: false
 })
 
-Products
+Product
   .sync({ force: false })
   .then(() => console.log('Products table has been created.'))
   .catch((err) => console.error('Products table could not be created.', err));
 
-module.exports = { Products }
+module.exports = { Product }
