@@ -8,6 +8,7 @@ const Product = db.define('product', {
   rating: Sequelize.STRING,
   reviews: Sequelize.INTEGER,
   price: Sequelize.REAL,
+  images: Sequelize.JSON,
   sizes: Sequelize.ARRAY(Sequelize.JSON)
 }, {
   timestamps: false
