@@ -3,7 +3,8 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const path = require('path');
 // const db = require('../database/index');
-const db = require('../database-sql/index');
+// const db = require('../database-sql/index');
+const Model = require('../database-sql/model');
 
 const app = express();
 const port = 2002;
@@ -27,9 +28,52 @@ app.get('/api/viewer/products', (req, res) => {
     );
 })
 
-// For backend testing purposes
+// // For backend testing purposes - Mongo
+// app.get('/api/all', (req, res) => {
+//   db.find({})
+//     .then((data) => {
+//       res.status(200).send(data);
+//     })
+//     .catch((err) => {
+//       res.status(404).send('Could not get all items')
+//     })
+// })
+
+// app.get('/api/:id', (req, res) => {
+//   var { id } = req.params;
+//   db.findOne({ index: id })
+//     .then((data) => {
+//       res.status(200).send(data);
+//     })
+//     .catch((err) => {
+//       res.status(404).send('Could not get all items')
+//     })
+// })
+
+// For backend testing purposes - PostgreSQL
+// app.get('/api/all', (req, res) => {
+//   db.query('SELECT * FROM products')
+//     .then(([data, metadata]) => {
+//       res.status(200).send(data);
+//     })
+//     .catch((err) => {
+//       res.status(404).send('Could not get all items')
+//     })
+// })
+
+// app.get('/api/:id', (req, res) => {
+//   var { id } = req.params;
+//   db.query(`SELECT * FROM products WHERE index=${id}`)
+//     .then(([data, metadata]) => {
+//       res.status(200).send(data);
+//     })
+//     .catch((err) => {
+//       res.status(404).send('Could not get all items')
+//     })
+// })
+
 app.get('/api/all', (req, res) => {
-  db.find({})
+  Model.Product.findAll({})
     .then((data) => {
       res.status(200).send(data);
     })
@@ -40,7 +84,7 @@ app.get('/api/all', (req, res) => {
 
 app.get('/api/:id', (req, res) => {
   var { id } = req.params;
-  db.findOne({ index: id })
+  Model.Product.findOne({ where: { index: id } })
     .then((data) => {
       res.status(200).send(data);
     })
