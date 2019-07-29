@@ -1,14 +1,15 @@
 {
   "version": "",
   "description": "A copycat implementation of Arc'teryx product pages, using React & css to mimic the look and feel of a professional website.",
-  "author": "Amanda Post",
+  "author": "Amanda Post [Front-End] | Kristina Taing [Back-End]",
   "engines": {
     "node": ">=6.13.0"
   },
   "scripts": {
     "start": "nodemon server/index.js",
     "build": "webpack -d --watch",
-    "seed": "node database/seed/seeder.js",
+    "seed": "mongoimport --db Product --collection products --file ./database/seed/data.json",
+    "generate-seed": "node --max-old-space-size=8192 database/seed/seeder.js",
     "test": "jest"
   },
   "dependencies": {
