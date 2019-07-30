@@ -107,7 +107,7 @@ const imagesGenerator = () => {
   return package;
 };
 
-// Returns an array of 100 randomly  generated product objects formatted to be stored in Mongo database.
+// Returns a randomly generated product formatted as an object to be stored in the Mongo database.
 const seedDataGenerator = (i) => {
   return {
     index: i,
