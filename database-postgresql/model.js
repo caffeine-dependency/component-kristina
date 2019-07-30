@@ -7,9 +7,7 @@ const Product = db.define('product', {
   description: Sequelize.STRING,
   rating: Sequelize.STRING,
   reviews: Sequelize.INTEGER,
-  price: Sequelize.REAL,
-  image_id: Sequelize.INTEGER,
-  size_id: Sequelize.INTEGER
+  price: Sequelize.REAL
 }, {
   timestamps: false
 })
