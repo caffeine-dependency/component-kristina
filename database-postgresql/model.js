@@ -14,7 +14,7 @@ const Product = db.define('product', {
   timestamps: false
 })
 
-const Image = db.define('product', {
+const Image = db.define('image', {
   colors: Sequelize.ARRAY(Sequelize.STRING),
   urls: Sequelize.ARRAY(Sequelize.STRING),
   thumbnails: Sequelize.ARRAY(Sequelize.STRING)
@@ -22,7 +22,7 @@ const Image = db.define('product', {
   timestamps: false
 })
 
-const Size = db.define('product', {
+const Size = db.define('size', {
   size: Sequelize.STRING,
   in_stock: Sequelize.INTEGER,
 }, {
