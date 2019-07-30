@@ -8,8 +8,23 @@ const Product = db.define('product', {
   rating: Sequelize.STRING,
   reviews: Sequelize.INTEGER,
   price: Sequelize.REAL,
-  images: Sequelize.JSON,
-  sizes: Sequelize.ARRAY(Sequelize.JSON)
+  image_id: Sequelize.INTEGER,
+  size_id: Sequelize.INTEGER
+}, {
+  timestamps: false
+})
+
+const Image = db.define('product', {
+  colors: Sequelize.ARRAY(Sequelize.STRING),
+  urls: Sequelize.ARRAY(Sequelize.STRING),
+  thumbnails: Sequelize.ARRAY(Sequelize.STRING)
+}, {
+  timestamps: false
+})
+
+const Size = db.define('product', {
+  size: Sequelize.STRING,
+  in_stock: Sequelize.INTEGER,
 }, {
   timestamps: false
 })
@@ -19,4 +34,14 @@ Product
   .then(() => console.log('Products table has been created.'))
   .catch((err) => console.error('Products table could not be created.', err));
 
-module.exports = { Product }
+Image
+  .sync({ force: false })
+  .then(() => console.log('Image table has been created.'))
+  .catch((err) => console.error('Products table could not be created.', err));
+
+Size
+  .sync({ force: false })
+  .then(() => console.log('Size table has been created.'))
+  .catch((err) => console.error('Products table could not be created.', err));
+
+module.exports = { Product, Image, Size }
