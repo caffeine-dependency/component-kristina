@@ -8,9 +8,9 @@
   "scripts": {
     "start": "nodemon server/index.js",
     "build": "webpack -d --watch",
-    "seed-mongo": "mongoimport --db Product --collection products --file ./database/seed/data.json",
-    "seed-postgres": "node database-sql/seed.js",
-    "generate-seed": "node --max-old-space-size=8192 database/seed/seeder.js",
+    "seed-mongodb": "mongoimport --db Product --collection products --file ./database-mongodb/seed/data.json",
+    "seed-postgresql": "node database-postgresql/seed.js",
+    "generate-seed:mongodb": "node --max-old-space-size=8192 database-mongodb/seed/seeder.js",
     "test": "jest"
   },
   "dependencies": {
