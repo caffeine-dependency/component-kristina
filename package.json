@@ -11,6 +11,7 @@
     "seed-mongodb": "mongoimport --db Product --collection products --file ./database-mongodb/seed/data.json",
     "seed-postgresql": "node database-postgresql/seed.js",
     "generate-seed:mongodb": "node --max-old-space-size=8192 database-mongodb/seed/seeder.js",
+    "generate-seed:postgresql": "node --max-old-space-size=8192 database-postgresql/seed/seeder.js",
     "test": "jest"
   },
   "dependencies": {
