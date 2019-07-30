@@ -2,7 +2,6 @@ const Sequelize = require('sequelize');
 const db = require('./index.js');
 
 const Product = db.define('product', {
-  index: Sequelize.INTEGER,
   name: Sequelize.STRING,
   description: Sequelize.STRING,
   rating: Sequelize.STRING,
