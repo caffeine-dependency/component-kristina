@@ -2,9 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const path = require('path');
-// const db = require('../database/index');
-// const db = require('../database-sql/index');
-const Model = require('../database-sql/model');
+// const db = require('../database-mongodb/index');
+// const db = require('../database-postgresql/index');
+const Model = require('../database-postgresql/model');
 
 const app = express();
 const port = 2002;
@@ -89,6 +89,6 @@ app.get('/api/:id', (req, res) => {
       res.status(200).send(data);
     })
     .catch((err) => {
-      res.status(404).send('Could not get all items')
+      res.status(404).send('Could not get item')
     })
 })
