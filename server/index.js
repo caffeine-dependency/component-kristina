@@ -51,8 +51,9 @@ app.get('/api/viewer/products', (req, res) => {
 // })
 
 // For backend testing purposes - PostgreSQL
-app.get('/api/all', (req, res) => {
-  db.query('SELECT * FROM products INNER JOIN images on images.product_id = products.id')
+app.get('/api/products/:id', (req, res) => {
+  var { id } = req.params;
+  db.query(`SELECT * FROM products where id=${id}`)
     .then(([data, metadata]) => {
       res.status(200).send(data);
     })
@@ -61,8 +62,9 @@ app.get('/api/all', (req, res) => {
     })
 })
 
-app.get('/api/images/all', (req, res) => {
-  db.query('SELECT * FROM images')
+app.get('/api/images/:id', (req, res) => {
+  var { id } = req.params;
+  db.query(`SELECT * FROM images where product_id=${id}`)
     .then(([data, metadata]) => {
       res.status(200).send(data);
     })
@@ -71,8 +73,9 @@ app.get('/api/images/all', (req, res) => {
     })
 })
 
-app.get('/api/sizes/all', (req, res) => {
-  db.query('SELECT * FROM sizes')
+app.get('/api/sizes/:id', (req, res) => {
+  var { id } = req.params;
+  db.query(`SELECT * FROM sizes where product_id=${id}`)
     .then(([data, metadata]) => {
       res.status(200).send(data);
     })
