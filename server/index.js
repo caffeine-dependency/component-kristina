@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const path = require('path');
 // const db = require('../database-mongodb/index');
 const db = require('../database-postgresql/index');
-// const Model = require('../database-postgresql/model');
+const Model = require('../database-postgresql/model');
 
 const app = express();
 const port = 2002;
