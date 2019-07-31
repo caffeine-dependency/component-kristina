@@ -120,13 +120,13 @@ const seedSizeGenerator = (product_id) => {
 }
 
 const writeToFile = () => {
-  let productFilepath = path.join(__dirname, `/product-data.csv`);
+  let productFilepath = path.join(__dirname, `../../product-data.csv`);
   let productHeaders = 'id|name|description|rating|reviews|price\n';
   let productData = '';
-  let imageFilepath = path.join(__dirname, `/image-data.csv`);
+  let imageFilepath = path.join(__dirname, `../../image-data.csv`);
   let imageHeaders = 'product_id|colors|urls|thumbnails\n';
   let imageData = '';
-  let sizeFilepath = path.join(__dirname, `/size-data.csv`);
+  let sizeFilepath = path.join(__dirname, `../../size-data.csv`);
   let sizeHeaders = 'product_id|size|instock\n';
   let sizeData = '';
   let product_id = 0;
