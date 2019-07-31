@@ -8,10 +8,13 @@
   "scripts": {
     "start": "nodemon server/index.js",
     "build": "webpack -d --watch",
-    "seed-mongodb": "mongoimport --db Product --collection products --file ./database-mongodb/seed/data.json",
-    "seed-postgresql": "node database-postgresql/seed.js",
-    "generate-seed:mongodb": "node --max-old-space-size=8192 database-mongodb/seed/seeder.js",
-    "generate-seed:postgresql": "node --max-old-space-size=8192 database-postgresql/seed/seeder.js",
+    "generate-seed:mongo": "node --max-old-space-size=8192 database-mongodb/seed/seeder.js",
+    "generate-seed:sql": "node --max-old-space-size=8192 database-postgresql/seed/seeder.js",
+    "seed:mongo": "mongoimport --db Product --collection products --file ./database-mongodb/seed/data.json",
+    "seed:sql": "npm run seed-product:sql; npm run seed-image:sql; npm run seed-size:sql",
+    "seed-product:sql": "psql -d product -U username -c \"\\copy products FROM 'product-data.csv' delimiter '|' csv header;\"",
+    "seed-image:sql": "psql -d product -U username -c \"\\copy images(product_id, colors, urls, thumbnails) FROM 'image-data.csv' delimiter '|' csv header;\"",
+    "seed-size:sql": "psql -d product -U username -c \"\\copy sizes(product_id, size, in_stock) FROM 'size-data.csv' delimiter '|' csv header;\"",
     "test": "jest"
   },
   "dependencies": {
