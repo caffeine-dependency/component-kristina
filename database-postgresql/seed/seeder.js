@@ -89,67 +89,65 @@ const colorGenerator = () => {
 // 2) urls: the matching set of url strings for all photos for a given product.
 // See imageData.js for data that this is derived from.
 const imagesGenerator = () => {
-  let imageSet = randomizer(imageData);
-  let package = { colors: [], thumbnails: imageSet.thumbnails, urls: imageSet.images };
-  for (let i = 0; i < imageSet.thumbnails.length; i++) {
-    package.colors.push(colorGenerator());
+  let obj = randomizer(imageData);
+  obj.colors = [];
+  for (let i = 0; i < obj.thumbnails.length; i++) {
+    obj.colors.push(colorGenerator());
   }
-  return package;
+  return obj;
 };
 
 // Returns a randomly generated product formatted as a csv to be stored in the PostgreSQL database.
-const seedProductGenerator = () => {
-  return `${nameGenerator()},${descriptionGenerator()},${ratingGenerator()},${reviewsGenerator()},${priceGenerator()}\n`;
+const seedProductGenerator = (id) => {
+  return `${id}|${nameGenerator()}|${descriptionGenerator()}|${ratingGenerator()}|${reviewsGenerator()}|${priceGenerator()}\n`;
 }
 
-const seedSizeGenerator = () => {
-  var arr = sizesGenerator();
-  var results = '';
+const seedImageGenerator = (product_id) => {
+  let imageSet = imagesGenerator();
+  let colors = imageSet.colors.join(',');
+  let thumbnails = imageSet.thumbnails.join(',');
+  let urls = imageSet.images.join(',');
+  return `${product_id}|{${colors}}|{${urls}}|{${thumbnails}}\n`;
+}
+
+const seedSizeGenerator = (product_id) => {
+  let arr = sizesGenerator();
+  let results = '';
   for (let i = 0; i < arr.length; i++) {
-    results += `${arr[i]},${randomizer(0, 1)}\n`
+    results += `${product_id}|${arr[i]}|${randomizer(0, 1)}\n`
   };
   return results;
 }
 
 const writeToFile = () => {
-  var productFilepath = path.join(__dirname, `/product-data.csv`);
-  var productHeaders = 'index,name,description,rating,reviews,price,image_id,size_id \n';
-  var productData = '';
-  var sizeFilepath = path.join(__dirname, `/size-data.csv`);
-  var sizeHeaders = 'size,instock\n';
-  var sizeData = '';
-  var count = 0;
+  let productFilepath = path.join(__dirname, `/product-data.csv`);
+  let productHeaders = 'id|name|description|rating|reviews|price\n';
+  let productData = '';
+  let imageFilepath = path.join(__dirname, `/image-data.csv`);
+  let imageHeaders = 'product_id|colors|urls|thumbnails\n';
+  let imageData = '';
+  let sizeFilepath = path.join(__dirname, `/size-data.csv`);
+  let sizeHeaders = 'product_id|size|instock\n';
+  let sizeData = '';
+  let product_id = 0;
   fs.writeFileSync(productFilepath, productHeaders);
+  fs.writeFileSync(imageFilepath, imageHeaders);
   fs.writeFileSync(sizeFilepath, sizeHeaders);
-  for (var i = 1; i <= 400; i++) {
+  for (let i = 1; i <= 400; i++) {
     productData = '';
+    imageData = '';
     sizeData = '';
-    for (var j = 1; j <= 25000; j++) {
-      count++;
-      productData += seedProductGenerator(count);
-      sizeData += seedSizeGenerator(count);
+    for (let j = 1; j <= 25000; j++) {
+      product_id++;
+      productData += seedProductGenerator(product_id);
+      imageData += seedImageGenerator(product_id);
+      sizeData += seedSizeGenerator(product_id);
     }
     fs.appendFileSync(productFilepath, productData);
+    fs.appendFileSync(imageFilepath, imageData);
     fs.appendFileSync(sizeFilepath, sizeData);
-    console.log(`round ${i}: ${count} items have been written to product file`)
+    console.log(`round ${i}: ${product_id} items have been written to files`)
   }
 }
-
-// const writeToImageFile = () => {
-//   var filepath = path.join(__dirname, `/image-data.csv`);
-//   var headers = 'colors, urls, thumbnails';
-//   var data = '';
-//   var count = 0;
-//   fs.writeFileSync(filepath, headers);
-//   for (var i = 1; i <= 400; i++) {
-//     data = '';
-//     for (var j = 1; j <= 25000; j++) {
-//       count++;
-//       data += seedDataGenerator(count);
-//     }
-//     fs.appendFileSync(filepath, data);
-//     console.log(`round ${i}: ${count} items have been written to image file`)
-//   }
-// }
 
 writeToFile();
