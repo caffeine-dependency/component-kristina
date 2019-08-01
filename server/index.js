@@ -28,91 +28,59 @@ app.get('/api/viewer/products', (req, res) => {
     );
 })
 
-// // For backend testing purposes - Mongo
-// app.get('/api/all', (req, res) => {
-//   db.find({})
-//     .then((data) => {
-//       res.status(200).send(data);
-//     })
-//     .catch((err) => {
-//       res.status(404).send('Could not get all items')
-//     })
-// })
+// For backend testing purposes - Mongo
+app.get('/api/mongo/all', (req, res) => {
+  db.find({})
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((err) => {
+      res.status(404).send('Could not get all items')
+    })
+})
 
-// app.get('/api/:id', (req, res) => {
-//   var { id } = req.params;
-//   db.findOne({ index: id })
-//     .then((data) => {
-//       res.status(200).send(data);
-//     })
-//     .catch((err) => {
-//       res.status(404).send('Could not get all items')
-//     })
-// })
+app.get('/api/mongo/:id', (req, res) => {
+  var { id } = req.params;
+  db.findOne({ index: id })
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((err) => {
+      res.status(404).send('Could not get all items')
+    })
+})
 
 // For backend testing purposes - PostgreSQL
-app.get('/api/products/:id', (req, res) => {
+app.get('/api/sql/:id', (req, res) => {
   var { id } = req.params;
-  db.query(`SELECT * FROM products where id=${id}`)
+  db.query(
+    `SELECT 
+      products.id,
+      products.name,
+      products.description,
+      products.rating,
+      products.reviews,
+      products.price,
+      json_build_object(
+        'colors', images.colors,
+        'thumbnails', images.thumbnails,
+        'url', images.urls
+      ) AS images,
+      (SELECT 
+        array_agg(
+          json_build_object(
+            'size', sizes.size,
+            'in_stock', sizes.in_stock
+          )
+        ) AS sizes
+      FROM sizes WHERE sizes.product_id = ${id})
+    FROM products
+    INNER JOIN images ON images.product_id = products.id
+    AND products.id=${id}`)
     .then(([data, metadata]) => {
       res.status(200).send(data);
     })
     .catch((err) => {
-      res.status(404).send('Could not get all items')
+      res.status(404).send('Could not get all items');
     })
 })
-
-app.get('/api/images/:id', (req, res) => {
-  var { id } = req.params;
-  db.query(`SELECT * FROM images where product_id=${id}`)
-    .then(([data, metadata]) => {
-      res.status(200).send(data);
-    })
-    .catch((err) => {
-      res.status(404).send('Could not get all items')
-    })
-})
-
-app.get('/api/sizes/:id', (req, res) => {
-  var { id } = req.params;
-  db.query(`SELECT * FROM sizes where product_id=${id}`)
-    .then(([data, metadata]) => {
-      res.status(200).send(data);
-    })
-    .catch((err) => {
-      res.status(404).send('Could not get all items')
-    })
-})
-
-app.get('/api/:id', (req, res) => {
-  var { id } = req.params;
-  db.query(`SELECT * FROM products INNER JOIN images on images.product_id = products.id WHERE products.id=${id}`)
-  // db.query(`SELECT * FROM products INNER JOIN sizes on sizes.product_id = products.id WHERE products.id=${id}`)
-    .then(([data, metadata]) => {
-      res.status(200).send(data);
-    })
-    .catch((err) => {
-      res.status(404).send('Could not get all items')
-    })
-})
-
-// app.get('/api/all', (req, res) => {
-//   Model.Product.findAll({})
-//     .then((data) => {
-//       res.status(200).send(data);
-//     })
-//     .catch((err) => {
-//       res.status(404).send('Could not get all items')
-//     })
-// })
-
-// app.get('/api/:id', (req, res) => {
-//   var { id } = req.params;
-//   Model.Product.findOne({ where: { index: id } })
-//     .then((data) => {
-//       res.status(200).send(data);
-//     })
-//     .catch((err) => {
-//       res.status(404).send('Could not get item')
-//     })
-// })
