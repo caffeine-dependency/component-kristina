@@ -122,7 +122,7 @@ const seedDataGenerator = (i) => {
 }
 
 const writeToFile = () => {
-  var filepath = path.join(__dirname, '/data.json');
+  var filepath = path.join(__dirname, '../../data.json');
   var data = '';
   var count = 0;
   fs.writeFileSync(filepath, '');
