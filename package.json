@@ -8,8 +8,14 @@
   "scripts": {
     "start": "nodemon server/index.js",
     "build": "webpack -d --watch",
-    "seed": "mongoimport --db Product --collection products --file ./database/seed/data.json",
-    "generate-seed": "node --max-old-space-size=8192 database/seed/seeder.js",
+    "generate-seed:mongo": "node --max-old-space-size=8192 database-mongodb/seed/seeder.js",
+    "generate-seed:sql": "node --max-old-space-size=8192 database-postgresql/seed/seeder.js",
+    "seed:mongo": "mongoimport --db Product --collection products --file ./data.json",
+    "seed:sql": "npm run seed-product:sql; npm run seed-image:sql; npm run seed-size:sql; index:sql;",
+    "seed-product:sql": "psql -d product -U sdc -c \"\\copy products FROM 'product-data.csv' delimiter '|' csv header;\"",
+    "seed-image:sql": "psql -d product -U sdc -c \"\\copy images(product_id, colors, urls, thumbnails) FROM 'image-data.csv' delimiter '|' csv header;\"",
+    "seed-size:sql": "psql -d product -U sdc -c \"\\copy sizes(product_id, size, in_stock) FROM 'size-data.csv' delimiter '|' csv header;\"",
+    "index:sql": "psql -d product -U sdc -c \"CREATE INDEX index_product ON products (id); CREATE INDEX index_image ON images (product_id); CREATE INDEX index_size ON sizes (product_id);\"",
     "test": "jest"
   },
   "dependencies": {
@@ -21,12 +27,14 @@
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "file-loader": "^4.0.0",
-    "mongoose": "^4.9.6",
+    "mongoose": "^5.6.7",
     "morgan": "^1.9.1",
     "nodemon": "^1.18.10",
+    "pg": "^7.12.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-icons": "^3.7.0",
+    "sequelize": "^5.10.3",
     "url-loader": "^2.0.1",
     "webpack": "^2.2.1"
   },

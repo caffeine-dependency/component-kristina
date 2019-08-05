@@ -3,19 +3,20 @@ mongoose.Promise = global.Promise;
 
 mongoose.connect('mongodb://localhost/Product', { useMongoClient: true })
   .then( () => {
-    console.log('Successfully connected to database') 
+    console.log('Connected to mongoDB') 
   })
   .catch( (err) => {
-    console.log('Error connecting to database', err)
+    console.log('Mongoose was unable to connect to the database.', err)
   })
+
 
 const productSchema = mongoose.Schema({
   index: Number, // each item will be given a unique integer index
   name: String,
   description: String,
-  price: Number,
   rating: String, // stars, out of 5
   reviews: Number, // number of total reviews on product
+  price: Number,
   sizes: [ { size: String, in_stock: Number } ],
   images: { thumbnails: [ String ], urls: [ String ], colors: [ String ] }
 })

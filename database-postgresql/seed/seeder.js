@@ -65,23 +65,13 @@ const priceGenerator = () => {
 
 // Returns an array of objects with randomized size and availability properties.
 const sizesGenerator = () => {
-  let results = [];
   const sizes = [
     ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL'],
     ['S', 'M', 'L'],
     ['2', '4', '6', '8'],
     ['XS', 'S', 'M', 'L', 'XL']
   ];
-  let arr = randomizer(sizes);
-
-  for (let i = 0; i < arr.length; i++) {
-    results.push({
-      size: arr[i],
-      in_stock: randomizer(0, 1)
-    });
-  };
-
-  return results;
+  return randomizer(sizes);
 };
 
 // Returns a random color name in Arc'teryx style (string).
@@ -99,41 +89,64 @@ const colorGenerator = () => {
 // 2) urls: the matching set of url strings for all photos for a given product.
 // See imageData.js for data that this is derived from.
 const imagesGenerator = () => {
-  let imageSet = randomizer(imageData);
-  let package = { colors: [], thumbnails: imageSet.thumbnails, urls: imageSet.images };
-  for (let i = 0; i < imageSet.thumbnails.length; i++) {
-    package.colors.push(colorGenerator());
+  let obj = randomizer(imageData);
+  obj.colors = [];
+  for (let i = 0; i < obj.thumbnails.length; i++) {
+    obj.colors.push(colorGenerator());
   }
-  return package;
+  return obj;
 };
 
-// Returns an array of 100 randomly  generated product objects formatted to be stored in Mongo database.
-const seedDataGenerator = (i) => {
-  return {
-    index: i,
-    name: nameGenerator(),
-    description: descriptionGenerator(),
-    rating: ratingGenerator(),
-    reviews: reviewsGenerator(),
-    price: priceGenerator(),
-    sizes: sizesGenerator(),
-    images: imagesGenerator()
-  }
+// Returns a randomly generated product formatted as a csv to be stored in the PostgreSQL database.
+const seedProductGenerator = (id) => {
+  return `${id}|${nameGenerator()}|${descriptionGenerator()}|${ratingGenerator()}|${reviewsGenerator()}|${priceGenerator()}\n`;
+}
+
+const seedImageGenerator = (product_id) => {
+  let imageSet = imagesGenerator();
+  let colors = imageSet.colors.join(',');
+  let thumbnails = imageSet.thumbnails.join(',');
+  let urls = imageSet.images.join(',');
+  return `${product_id}|{${colors}}|{${urls}}|{${thumbnails}}\n`;
+}
+
+const seedSizeGenerator = (product_id) => {
+  let arr = sizesGenerator();
+  let results = '';
+  for (let i = 0; i < arr.length; i++) {
+    results += `${product_id}|${arr[i]}|${randomizer(0, 1)}\n`
+  };
+  return results;
 }
 
 const writeToFile = () => {
-  var filepath = path.join(__dirname, '/data.json');
-  var data = '';
-  var count = 0;
-  fs.writeFileSync(filepath, '');
-  for (var i = 1; i <= 400; i++) {
-    data = '';
-    for (var j = 1; j <= 25000; j++) {
-      count++;
-      data += JSON.stringify(seedDataGenerator(count));
+  let productFilepath = path.join(__dirname, `../../product-data.csv`);
+  let productHeaders = 'id|name|description|rating|reviews|price\n';
+  let productData = '';
+  let imageFilepath = path.join(__dirname, `../../image-data.csv`);
+  let imageHeaders = 'product_id|colors|urls|thumbnails\n';
+  let imageData = '';
+  let sizeFilepath = path.join(__dirname, `../../size-data.csv`);
+  let sizeHeaders = 'product_id|size|instock\n';
+  let sizeData = '';
+  let product_id = 0;
+  fs.writeFileSync(productFilepath, productHeaders);
+  fs.writeFileSync(imageFilepath, imageHeaders);
+  fs.writeFileSync(sizeFilepath, sizeHeaders);
+  for (let i = 1; i <= 400; i++) {
+    productData = '';
+    imageData = '';
+    sizeData = '';
+    for (let j = 1; j <= 25000; j++) {
+      product_id++;
+      productData += seedProductGenerator(product_id);
+      imageData += seedImageGenerator(product_id);
+      sizeData += seedSizeGenerator(product_id);
     }
-   fs.appendFileSync(filepath, data);
-    console.log(`round ${i}: ${count} items have been written to file`)
+    fs.appendFileSync(productFilepath, productData);
+    fs.appendFileSync(imageFilepath, imageData);
+    fs.appendFileSync(sizeFilepath, sizeData);
+    console.log(`round ${i}: ${product_id} items have been written to files`)
   }
 }
 
