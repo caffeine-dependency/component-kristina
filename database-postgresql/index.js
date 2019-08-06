@@ -1,8 +1,8 @@
-const { username, password } = require('./postgreSQL-token');
+const { username, password, host } = require('./postgreSQL-token');
 
 const Sequelize = require('sequelize');
 const db = new Sequelize('product', username , password, {
-  host: 'localhost',
+  host: host,
   dialect: 'postgres'
 });
 
