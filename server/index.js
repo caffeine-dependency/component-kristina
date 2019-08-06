@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const path = require('path');
 // const db = require('../database-mongodb/index');
 const db = require('../database-postgresql/index');
-const Model = require('../database-postgresql/model');
+// const Model = require('../database-postgresql/model');
 
 const app = express();
 const port = 2002;
@@ -41,7 +41,7 @@ app.get('/api/viewer/products', (req, res) => {
       FROM sizes WHERE sizes.product_id = ${randomIndex})
     FROM products
     INNER JOIN images ON images.product_id = products.id
-    AND products.id=${id}`)
+    AND products.id=${randomIndex}`)
     .then(([data, metadata]) => {
       res.status(200).send(data);
     })
