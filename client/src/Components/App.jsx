@@ -3,16 +3,16 @@ import ProductViewer from './ProductViewer/ProductViewer.jsx';
 import ProductInfo from './ProductInfo/ProductInfo.jsx';
 import StaticComponents from './StaticComponents.jsx';
 import axios from 'axios';
-import sampleData from '../../sampleData.js';
+// import sampleData from '../../sampleData.js';
 
 class App extends React.Component {
-//---------!!!--------------IMPORTANT----------------!!!------------
+  //---------!!!--------------IMPORTANT----------------!!!------------
 
-//  Uncomment the below when you are ready to show the completed app.
-//    >> i.e. If you are refreshing frequently, do not uncomment.
-//    >> This is to prevent too many calls to my AWS S3 image storage.
+  //  Uncomment the below when you are ready to show the completed app.
+  //    >> i.e. If you are refreshing frequently, do not uncomment.
+  //    >> This is to prevent too many calls to my AWS S3 image storage.
 
-//------------------------------------------------------------------
+  //------------------------------------------------------------------
   constructor(props) {
     super(props);
     this.state = {
@@ -26,32 +26,32 @@ class App extends React.Component {
       sizes: [],
       currentImage: {},
       currentSize: null,
-      currentColor: null 
+      currentColor: null
     }
   }
 
   // Fetches data from API/database, and triggers re-render once this is complete.
   componentDidMount() {
     axios
-    .get('/api/viewer/products')
-    .then( ({data}) => {
-      let {name, description, rating, reviews, price, images, sizes } = data;
-      this.setState({
-        dataLoaded: true,
-        name,
-        description,
-        rating,
-        reviews,
-        price,
-        images,
-        sizes,
-        currentImage: { url: images.thumbnails[0], key: 0 },
-        currentColor: images.colors[0]
-      }, console.log('Successfully fetched item data'))
-    })
-    .catch( err => {
-      console.log('There was an error getting the item data :(', err);
-    })
+      .get('/api/viewer/products')
+      .then(({ data }) => {
+        let { name, description, rating, reviews, price, images, sizes } = data[0];
+        this.setState({
+          dataLoaded: true,
+          name,
+          description,
+          rating,
+          reviews,
+          price,
+          images,
+          sizes,
+          currentImage: { url: images.thumbnails[0], key: 0 },
+          currentColor: images.colors[0]
+        })
+      })
+      .catch(err => {
+        console.log('There was an error getting the item data');
+      })
   }
 
   // When ready to present, COMMENT OUT THIS CODE:
@@ -66,7 +66,7 @@ class App extends React.Component {
   //     currentColor: images.colors[0]
   //   }
   // }
-  
+
   // Updates the image showing in the ProductViewer, triggered by user click on color thumbnails
   changeCurrentImage(url, key) {
     this.setState({
@@ -94,21 +94,22 @@ class App extends React.Component {
       return (
         <div id="app" className="vert-container">
           <div id="product-path">
-          <span id="underlined">Arc'teryx</span><span>{` > ${this.state.name}`}</span>
+            <span id="underlined">Arc'teryx</span><span>{` > ${this.state.name}`}</span>
           </div>
           <div id="app-dynamic">
-            <ProductViewer images={this.state.images} currentImage={this.state.currentImage.url}/>
-            <ProductInfo 
-              details={this.state} 
+            <ProductViewer images={this.state.images} currentImage={this.state.currentImage.url} />
+            <ProductInfo
+              details={this.state}
               changeCurrentImage={this.changeCurrentImage.bind(this)}
               changeCurrentSize={this.changeCurrentSize.bind(this)}
-              changeCurrentColor={this.changeCurrentColor.bind(this)}/> 
+              changeCurrentColor={this.changeCurrentColor.bind(this)} />
           </div>
           <div id="app-static">
-            <StaticComponents name={this.state.name}/>
+            <StaticComponents name={this.state.name} />
           </div>
-      </div>
-    )} else {
+        </div>
+      )
+    } else {
       // If the data from the API call hasn't loaded yet, render a loading gif.
       return (<div><img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif"></img></div>)
     }

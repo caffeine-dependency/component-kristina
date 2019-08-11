@@ -1,17 +1,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-// const morgan = require('morgan');
+// const morgan = require('morgan');                       // Comment out when deployed
 const path = require('path');
-// const db = require('../database-mongodb/index');
+// const db = require('../database-mongodb/index');        // Comment out when using psql
 const db = require('../database-postgresql/index');
-// const Model = require('../database-postgresql/model');
+// const Model = require('../database-postgresql/model');  // Comment out when deployed
 
 const app = express();
 const port = 2002;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
-// app.use(morgan('dev'));
+// app.use(morgan('dev'));                                 // Comment out when deployed
 app.use(express.static(path.join(__dirname, '../client/dist')));
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
@@ -50,6 +50,7 @@ app.get('/api/viewer/products', (req, res) => {
     })
 })
 
+// Update for Loader.io testing
 app.get('FILL ME IN', (req, res) => {
   res.status(200).send('FILL ME IN');
 });
