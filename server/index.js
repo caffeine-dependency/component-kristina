@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const morgan = require('morgan');
+// const morgan = require('morgan');
 const path = require('path');
 // const db = require('../database-mongodb/index');
 const db = require('../database-postgresql/index');
@@ -11,7 +11,7 @@ const port = 2002;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(morgan('dev'));
+// app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, '../client/dist')));
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
@@ -49,6 +49,10 @@ app.get('/api/viewer/products', (req, res) => {
       res.status(404).send('Could not get all items');
     })
 })
+
+app.get('FILL ME IN', (req, res) => {
+  res.status(200).send('FILL ME IN');
+});
 
 // // For backend testing purposes - Mongo
 // app.get('/api/mongo/all', (req, res) => {
