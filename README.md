@@ -1,7 +1,8 @@
 # Arc'teryx System Design - Product Viewer
 
 > Project description
-Replica of www.arcteryx.com system design.
+> Replica of www.arcteryx.com system design.
+>> More details
 
 
 
@@ -38,4 +39,47 @@ From within the root directory:
 npm install -g webpack
 npm install
 ```
+
+### Seeding the database
+
+Create a psql database
+```sh
+CREATE DATABASE product;
+```
+
+Create a token file to enter psql credentials
+
+```sh
+cd component-kristina/database-postgresql
+touch postgresql-token.js
+vim postgresql-token.js
+```
+
+Edit file to export an object with psql credentials
+
+```sh
+const username = 'FILL_ME_IN';
+const password = 'FILL_ME_IN';
+const host = 'FILL_ME_IN';
+module.exports = { username, password, host };
+```
+
+Start server
+```sh
+npm start
+```
+
+Generate and save 10M entries to CSV files
+
+```sh
+npm run generate-seed:sql
+```
+
+Seed database with all 10M entries
+
+```sh
+npm run seed:sql
+```
+
+
 
