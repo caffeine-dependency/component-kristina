@@ -1,9 +1,6 @@
 # Arc'teryx System Design - Product Viewer
 
-> Project description
-> Replica of www.arcteryx.com system design.
->> More details
-
+> Inherited front-end replica of www.arcteryx.com, and built out an optimized system design to handle 10M database entries. The implemented system design generates and seeds 10M entries within 10 minutes, and returns a query response in 6ms. When deployed to an EC2 instance, the design reaches 1200 RPS, 65ms latency, with 0.0% error rate when using a Round Robin load balancing method between two remote servers.
 
 
 ## Related Components Developed The Team 
