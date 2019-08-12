@@ -1,7 +1,7 @@
 {
-  "version": "",
-  "description": "A copycat implementation of Arc'teryx product pages, using React & css to mimic the look and feel of a professional website.",
-  "author": "Amanda Post [Front-End] | Kristina Taing [Back-End]",
+  "version": "1.0.0",
+  "description": "An optimized system design for the Arc'teryx product page that handles 10M database entries.",
+  "author": "Kristina Taing [Back-End] | Amanda Post [Front-End]",
   "engines": {
     "node": ">=6.13.0"
   },
