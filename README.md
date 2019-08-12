@@ -1,9 +1,9 @@
-# Arc'teryx System Design - Product Viewer
+# Arc'teryx Replica System Design - Product Viewer Component
 
 > Inherited front-end replica of www.arcteryx.com, and developed an optimized system design to handle 10M database entries. The implemented system design generates and seeds 10M entries within 10 minutes, and returns a query response in 6ms. When deployed to an EC2 instance, the design reaches 1200 RPS, 65ms latency, with 0.0% error rate using a Round Robin load balancing method between two remote servers.
 
 
-## Related Components Developed The Team 
+## Related Components Developed By The Team 
 
   - [Navigation Bar (version 1)](https://github.com/caffeine-dependency/nav-bar-jj.git)
   - [Navigation Bar (version 2)](https://github.com/caffeine-dependency/smooth-jazzy.git)
@@ -63,7 +63,6 @@ npm run seed:sql
 An `nvmrc` file is included if using [nvm](https://github.com/creationix/nvm).
 
 - Node 6.13.0
-- etc
 
 ## Development
 
