@@ -1,7 +1,11 @@
-# Arc'teryx Replica System Design - Product Component
+# Mock-teryx System Design - Product Component
 
-> Inherited front-end replica of www.arcteryx.com, and developed an optimized system design to handle 10M database entries. The implemented system design generates and seeds 10M entries within 10 minutes, and returns a query response in 6ms. When deployed to an EC2 instance, the design reaches 1200 RPS, 65ms latency, with 0.0% error rate using a Round Robin load balancing method between two remote servers.
+> Inherited a front-end replica of www.arcteryx.com, and developed an optimized system design to handle 10M database entries. The implemented system design generates and seeds 10M entries within 10 minutes, and returns a query response in 6ms. When deployed to an EC2 instance, the design reaches 1200 RPS, 65ms latency, with 0.0% error rate using a Round Robin load balancing method between two remote servers.
 
+
+## Legacy Code 
+
+  - [Front-end Arc'teryx Replica](https://github.com/pump-squad/Amanda-Modules.git)
 
 ## Related Components Developed By The Team 
 
